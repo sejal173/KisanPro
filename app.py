@@ -389,13 +389,13 @@ def orders():
         cursor.execute('SELECT * FROM Orders WHERE farmer_id = %s ORDER BY order_date DESC', (farmer_id,))
         orders = cursor.fetchall()
         
-        # Get order items for each order
+        # Get order items for each order (use 'order_items' to avoid shadowing dict.items() method)
         for order in orders:
             cursor.execute('''SELECT oi.*, s.name as seed_name 
                              FROM Order_Items oi 
                              JOIN Seeds s ON oi.seed_id = s.id 
                              WHERE oi.order_id = %s''', (order['id'],))
-            order['items'] = cursor.fetchall()
+            order['order_items'] = cursor.fetchall()
         
         cursor.close()
         conn.close()
@@ -601,13 +601,13 @@ def admin_orders():
         
         orders = cursor.fetchall()
         
-        # Get order items for each order
+        # Get order items for each order (use 'order_items' to avoid shadowing dict.items() method)
         for order in orders:
             cursor.execute('''SELECT oi.*, s.name as seed_name 
                              FROM Order_Items oi 
                              JOIN Seeds s ON oi.seed_id = s.id 
                              WHERE oi.order_id = %s''', (order['id'],))
-            order['items'] = cursor.fetchall()
+            order['order_items'] = cursor.fetchall()
         
         cursor.close()
         conn.close()

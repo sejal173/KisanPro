@@ -24,7 +24,7 @@
                 <div class="order-items">
                     <h4>Items:</h4>
                     <ul>
-                        {% for item in order.items %}
+                        {% for item in order.order_items %}
                             <li>
                                 {{ item.seed_name }} - {{ item.quantity }} kg × ₹{{ item.price }} = ₹{{ "%.2f"|format(item.quantity * item.price) }}
                             </li>
