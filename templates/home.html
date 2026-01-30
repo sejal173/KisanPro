@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Home - KisanPro{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <h1>Welcome to KisanPro</h1>
+    <p>Your trusted partner for quality seeds and agricultural solutions</p>
+    <div class="hero-buttons">
+        <a href="{{ url_for('seeds_list') }}" class="btn btn-primary">Browse Seeds</a>
+        {% if not session.farmer_id %}
+            <a href="{{ url_for('farmer_register') }}" class="btn btn-secondary">Register Now</a>
+        {% endif %}
+    </div>
+</div>
+
+<section class="featured-seeds">
+    <h2>Featured Seeds</h2>
+    <div class="seeds-grid">
+        {% if featured_seeds %}
+            {% for seed in featured_seeds %}
+                <div class="seed-card">
+                    <div class="seed-image">
+                        <span class="seed-icon">🌱</span>
+                    </div>
+                    <div class="seed-info">
+                        <h3>{{ seed.name }}</h3>
+                        <p class="crop-type">{{ seed.crop_type }}</p>
+                        <p class="season">Season: {{ seed.season }}</p>
+                        <p class="price">₹{{ seed.price }}/kg</p>
+                        <p class="stock">Stock: {{ seed.stock_quantity }} kg</p>
+                        <a href="{{ url_for('seed_details', seed_id=seed.id) }}" class="btn btn-sm">View Details</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No seeds available at the moment.</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="features">
+    <h2>Why Choose KisanPro?</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🌾</div>
+            <h3>Quality Seeds</h3>
+            <p>Premium quality seeds from trusted suppliers</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🚚</div>
+            <h3>Fast Delivery</h3>
+            <p>Quick and reliable delivery to your doorstep</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💰</div>
+            <h3>Best Prices</h3>
+            <p>Competitive prices for all your farming needs</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">👨‍🌾</div>
+            <h3>Expert Support</h3>
+            <p>Get guidance from agricultural experts</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping Cart - KisanPro{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Shopping Cart</h1>
+</div>
+
+{% if cart_items %}
+    <div class="cart-container">
+        <div class="cart-items">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Seed</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                        <tr>
+                            <td>
+                                <div class="cart-item-info">
+                                    <strong>{{ item.seed.name }}</strong>
+                                    <span class="cart-item-meta">{{ item.seed.crop_type }} | {{ item.seed.season }}</span>
+                                </div>
+                            </td>
+                            <td>₹{{ item.seed.price }}/kg</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('update_cart') }}" class="quantity-form">
+                                    <input type="hidden" name="seed_id" value="{{ item.seed.id }}">
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" 
+                                           min="1" max="{{ item.seed.stock_quantity }}" 
+                                           onchange="this.form.submit()">
+                                </form>
+                            </td>
+                            <td>₹{{ "%.2f"|format(item.total) }}</td>
+                            <td>
+                                <a href="{{ url_for('remove_from_cart', seed_id=item.seed.id) }}" 
+                                   class="btn btn-danger btn-sm" 
+                                   onclick="return confirm('Remove this item from cart?')">Remove</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="cart-actions">
+                <a href="{{ url_for('clear_cart') }}" class="btn btn-secondary" 
+                   onclick="return confirm('Clear entire cart?')">Clear Cart</a>
+                <a href="{{ url_for('seeds_list') }}" class="btn btn-secondary">Continue Shopping</a>
+            </div>
+        </div>
+        
+        <div class="cart-summary">
+            <h2>Order Summary</h2>
+            <div class="summary-row">
+                <span>Subtotal:</span>
+                <span>₹{{ "%.2f"|format(total) }}</span>
+            </div>
+            <div class="summary-row">
+                <span>Total Items:</span>
+                <span>{{ cart_items|length }}</span>
+            </div>
+            <hr>
+            <div class="summary-row total">
+                <span>Total Amount:</span>
+                <span>₹{{ "%.2f"|format(total) }}</span>
+            </div>
+            
+            <form method="POST" action="{{ url_for('orders') }}">
+                <button type="submit" class="btn btn-primary btn-block btn-large">Place Order</button>
+            </form>
+        </div>
+    </div>
+{% else %}
+    <div class="empty-cart">
+        <p>Your cart is empty.</p>
+        <a href="{{ url_for('seeds_list') }}" class="btn btn-primary">Browse Seeds</a>
+    </div>
+{% endif %}
+{% endblock %}

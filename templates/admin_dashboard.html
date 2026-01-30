@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - KisanPro{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Admin Dashboard</h1>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">🌱</div>
+        <div class="stat-info">
+            <h3>{{ stats.total_seeds }}</h3>
+            <p>Total Seeds</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">📦</div>
+        <div class="stat-info">
+            <h3>{{ stats.total_orders }}</h3>
+            <p>Total Orders</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">👨‍🌾</div>
+        <div class="stat-info">
+            <h3>{{ stats.total_farmers }}</h3>
+            <p>Total Farmers</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-info">
+            <h3>{{ stats.pending_orders }}</h3>
+            <p>Pending Orders</p>
+        </div>
+    </div>
+</div>
+
+<div class="admin-actions">
+    <a href="{{ url_for('admin_seeds') }}" class="admin-action-card">
+        <h3>Manage Seeds</h3>
+        <p>Add, edit, or delete seeds</p>
+    </a>
+    <a href="{{ url_for('admin_orders') }}" class="admin-action-card">
+        <h3>Manage Orders</h3>
+        <p>View and update order status</p>
+    </a>
+    <a href="{{ url_for('admin_farmers') }}" class="admin-action-card">
+        <h3>Manage Farmers</h3>
+        <p>View and manage farmer accounts</p>
+    </a>
+</div>
+{% endblock %}

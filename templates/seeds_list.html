@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Seeds - KisanPro{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Browse Seeds</h1>
+</div>
+
+<div class="filters-section">
+    <form method="GET" action="{{ url_for('seeds_list') }}" class="filter-form">
+        <div class="filter-group">
+            <label for="crop_type">Crop Type:</label>
+            <select id="crop_type" name="crop_type">
+                <option value="">All Types</option>
+                {% for ct in crop_types %}
+                    <option value="{{ ct }}" {% if ct == selected_crop_type %}selected{% endif %}>{{ ct }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="season">Season:</label>
+            <select id="season" name="season">
+                <option value="">All Seasons</option>
+                {% for s in seasons %}
+                    <option value="{{ s }}" {% if s == selected_season %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a href="{{ url_for('seeds_list') }}" class="btn btn-secondary">Clear</a>
+    </form>
+</div>
+
+<div class="seeds-grid">
+    {% if seeds %}
+        {% for seed in seeds %}
+            <div class="seed-card">
+                <div class="seed-image">
+                    <span class="seed-icon">🌱</span>
+                </div>
+                <div class="seed-info">
+                    <h3>{{ seed.name }}</h3>
+                    <p class="crop-type"><strong>Type:</strong> {{ seed.crop_type }}</p>
+                    <p class="season"><strong>Season:</strong> {{ seed.season }}</p>
+                    <p class="price">₹{{ seed.price }}/kg</p>
+                    <p class="stock {% if seed.stock_quantity == 0 %}out-of-stock{% endif %}">
+                        Stock: {{ seed.stock_quantity }} kg
+                    </p>
+                    <div class="seed-actions">
+                        <a href="{{ url_for('seed_details', seed_id=seed.id) }}" class="btn btn-sm">View Details</a>
+                        {% if session.farmer_id and seed.stock_quantity > 0 %}
+                            <form method="POST" action="{{ url_for('add_to_cart') }}" style="display: inline;">
+                                <input type="hidden" name="seed_id" value="{{ seed.id }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-sm btn-primary">Add to Cart</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-results">No seeds found matching your criteria.</p>
+    {% endif %}
+</div>
+{% endblock %}

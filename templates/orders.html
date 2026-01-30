@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders - KisanPro{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>My Orders</h1>
+</div>
+
+{% if orders %}
+    <div class="orders-list">
+        {% for order in orders %}
+            <div class="order-card">
+                <div class="order-header">
+                    <div>
+                        <h3>Order #{{ order.id }}</h3>
+                        <p class="order-date">Date: {{ order.order_date.strftime('%d %B %Y, %I:%M %p') }}</p>
+                    </div>
+                    <div class="order-status status-{{ order.status.lower() }}">
+                        {{ order.status }}
+                    </div>
+                </div>
+                
+                <div class="order-items">
+                    <h4>Items:</h4>
+                    <ul>
+                        {% for item in order.items %}
+                            <li>
+                                {{ item.seed_name }} - {{ item.quantity }} kg × ₹{{ item.price }} = ₹{{ "%.2f"|format(item.quantity * item.price) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div class="order-footer">
+                    <div class="order-total">
+                        <strong>Total Amount: ₹{{ "%.2f"|format(order.total_amount) }}</strong>
+                    </div>
+                    <a href="{{ url_for('order_details', order_id=order.id) }}" class="btn btn-sm">View Details</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-orders">
+        <p>You haven't placed any orders yet.</p>
+        <a href="{{ url_for('seeds_list') }}" class="btn btn-primary">Browse Seeds</a>
+    </div>
+{% endif %}
+{% endblock %}

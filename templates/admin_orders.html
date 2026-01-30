@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Orders - Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Manage Orders</h1>
+    <div class="filter-buttons">
+        <a href="{{ url_for('admin_orders') }}" class="btn btn-sm {% if not selected_status %}btn-primary{% else %}btn-secondary{% endif %}">All</a>
+        <a href="{{ url_for('admin_orders', status='Pending') }}" class="btn btn-sm {% if selected_status == 'Pending' %}btn-primary{% else %}btn-secondary{% endif %}">Pending</a>
+        <a href="{{ url_for('admin_orders', status='Approved') }}" class="btn btn-sm {% if selected_status == 'Approved' %}btn-primary{% else %}btn-secondary{% endif %}">Approved</a>
+        <a href="{{ url_for('admin_orders', status='Delivered') }}" class="btn btn-sm {% if selected_status == 'Delivered' %}btn-primary{% else %}btn-secondary{% endif %}">Delivered</a>
+    </div>
+</div>
+
+{% if orders %}
+    <div class="admin-orders-list">
+        {% for order in orders %}
+            <div class="admin-order-card">
+                <div class="order-header">
+                    <div>
+                        <h3>Order #{{ order.id }}</h3>
+                        <p class="order-meta">
+                            <strong>Farmer:</strong> {{ order.farmer_name }} ({{ order.farmer_email }})<br>
+                            <strong>Date:</strong> {{ order.order_date.strftime('%d %B %Y, %I:%M %p') }}
+                        </p>
+                    </div>
+                    <div class="order-status-section">
+                        <div class="order-status status-{{ order.status.lower() }}">
+                            {{ order.status }}
+                        </div>
+                        <form method="POST" action="{{ url_for('admin_update_order_status', order_id=order.id) }}" class="status-form">
+                            <select name="status" onchange="this.form.submit()">
+                                <option value="Pending" {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option value="Approved" {% if order.status == 'Approved' %}selected{% endif %}>Approved</option>
+                                <option value="Delivered" {% if order.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="order-items">
+                    <h4>Items:</h4>
+                    <ul>
+                        {% for item in order.items %}
+                            <li>{{ item.seed_name }} - {{ item.quantity }} kg × ₹{{ item.price }} = ₹{{ "%.2f"|format(item.quantity * item.price) }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div class="order-footer">
+                    <div class="order-total">
+                        <strong>Total Amount: ₹{{ "%.2f"|format(order.total_amount) }}</strong>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No orders found.</p>
+{% endif %}
+{% endblock %}
