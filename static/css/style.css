@@ -339,6 +339,7 @@ body {
 
 .seed-info {
     padding: 0 24px 24px;
+    text-align: left;
 }
 
 .seed-info h3 {
@@ -416,15 +417,11 @@ body {
     box-shadow: 0 6px 16px rgba(44, 85, 48, 0.35);
 }
 
-.seed-card .btn::after {
+.seed-card a.btn::after {
     content: '→';
     font-size: 1.1em;
     font-weight: 700;
     opacity: 0.8;
-}
-
-.seed-card .btn.btn-primary::after {
-    content: '→';
 }
 
 .seed-icon-large {
@@ -440,10 +437,20 @@ body {
 }
 
 .seed-actions {
-    margin-top: 15px;
+    margin-top: 16px;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+}
+
+.seed-actions .btn {
+    width: auto;
+    flex: 1;
+    min-width: 120px;
+}
+
+.featured-seeds .seed-info .btn {
+    width: 100%;
 }
 
 /* Filters */
