@@ -22,6 +22,7 @@ body {
     width: 100%;
 }
 
+//
 .main-content {
     flex: 1;
     padding: 20px 0;
@@ -185,6 +186,7 @@ body {
     box-shadow: 0 10px 40px rgba(44, 85, 48, 0.25);
     position: relative;
     overflow: hidden;
+
 }
 
 .hero-section::before {
@@ -199,7 +201,7 @@ body {
 }
 
 .hero-section h1 {
-    font-size: 2.75rem;
+    font-size: 2.76rem;
     margin-bottom: 1rem;
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -297,6 +299,10 @@ body {
     position: relative;
 }
 
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
 .seed-card::before {
     content: '';
     position: absolute;
